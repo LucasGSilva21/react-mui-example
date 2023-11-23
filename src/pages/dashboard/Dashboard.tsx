@@ -1,18 +1,20 @@
+import React from "react";
+import { BasePage } from "../../shared/layouts";
+import { useAppThemeContext, useDrawerContext } from "../../shared/contexts";
 import { Button } from "@mui/material";
-import { useAppThemeContext, useDrawerContext } from "./shared/contexts";
 
-export const App = () => {
+export const Dashboard: React.FC = () => {
   const { toggleDrawerOpen } = useDrawerContext();
   const { toggleTheme } = useAppThemeContext();
 
   return (
-    <div className="App">
+    <BasePage title="Página Inicial">
       <Button variant="contained" color="primary" onClick={toggleDrawerOpen}>
         Menu
       </Button>
       <Button variant="contained" color="primary" onClick={toggleTheme}>
         Trocar tema
       </Button>
-    </div>
+    </BasePage>
   );
 };
