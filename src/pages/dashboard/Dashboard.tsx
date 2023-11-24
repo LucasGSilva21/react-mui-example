@@ -8,7 +8,7 @@ export const Dashboard: React.FC = () => {
   const { toggleTheme } = useAppThemeContext();
 
   return (
-    <BasePage title="Página Inicial">
+    <BasePage title="Página Inicial" toolBar={<></>}>
       <Button variant="contained" color="primary" onClick={toggleDrawerOpen}>
         Menu
       </Button>
