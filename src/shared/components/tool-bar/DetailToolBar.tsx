@@ -1,4 +1,12 @@
-import { Box, Button, Divider, Icon, Paper, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Icon,
+  Paper,
+  Skeleton,
+  useTheme,
+} from "@mui/material";
 
 interface IDetailToolBarProps {
   textNewBotton?: string;
@@ -7,6 +15,11 @@ interface IDetailToolBarProps {
   showDeleteBotton?: boolean;
   showNewBotton?: boolean;
   showBackBotton?: boolean;
+  showLoadSaveBotton?: boolean;
+  showLoadSaveAndBackBotton?: boolean;
+  showLoadDeleteBotton?: boolean;
+  showLoadNewBotton?: boolean;
+  showLoadBackBotton?: boolean;
   onClickSaveBotton?: () => void;
   onClickSaveAndBackBotton?: () => void;
   onClickDeleteBotton?: () => void;
@@ -21,6 +34,11 @@ export const DetailToolBar: React.FC<IDetailToolBarProps> = ({
   showDeleteBotton = true,
   showNewBotton = true,
   showBackBotton = true,
+  showLoadSaveBotton = false,
+  showLoadSaveAndBackBotton = false,
+  showLoadDeleteBotton = false,
+  showLoadNewBotton = false,
+  showLoadBackBotton = false,
   onClickSaveBotton,
   onClickSaveAndBackBotton,
   onClickDeleteBotton,
@@ -40,7 +58,7 @@ export const DetailToolBar: React.FC<IDetailToolBarProps> = ({
       gap={1}
       alignItems="center"
     >
-      {showSaveBotton && (
+      {showSaveBotton && !showLoadSaveBotton && (
         <Button
           variant="contained"
           color="primary"
@@ -51,7 +69,9 @@ export const DetailToolBar: React.FC<IDetailToolBarProps> = ({
           Salvar
         </Button>
       )}
-      {showSaveAndBackBotton && (
+      {showLoadSaveBotton && <Skeleton width={110} height={60} />}
+
+      {showSaveAndBackBotton && !showLoadSaveAndBackBotton && (
         <Button
           variant="outlined"
           color="primary"
@@ -62,7 +82,9 @@ export const DetailToolBar: React.FC<IDetailToolBarProps> = ({
           Salvar e voltar
         </Button>
       )}
-      {showDeleteBotton && (
+      {showLoadSaveAndBackBotton && <Skeleton width={180} height={60} />}
+
+      {showDeleteBotton && !showLoadDeleteBotton && (
         <Button
           variant="outlined"
           color="primary"
@@ -73,7 +95,9 @@ export const DetailToolBar: React.FC<IDetailToolBarProps> = ({
           Apagar
         </Button>
       )}
-      {showNewBotton && (
+      {showLoadDeleteBotton && <Skeleton width={110} height={60} />}
+
+      {showNewBotton && !showLoadNewBotton && (
         <Button
           variant="outlined"
           color="primary"
@@ -84,8 +108,11 @@ export const DetailToolBar: React.FC<IDetailToolBarProps> = ({
           {textNewBotton}
         </Button>
       )}
+      {showLoadNewBotton && <Skeleton width={110} height={60} />}
+
       <Divider variant="middle" orientation="vertical" />
-      {showBackBotton && (
+
+      {showBackBotton && !showLoadBackBotton && (
         <Button
           variant="outlined"
           color="primary"
@@ -96,6 +123,7 @@ export const DetailToolBar: React.FC<IDetailToolBarProps> = ({
           Voltar
         </Button>
       )}
+      {showLoadBackBotton && <Skeleton width={110} height={60} />}
     </Box>
   );
 };
