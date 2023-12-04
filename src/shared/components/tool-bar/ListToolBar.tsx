@@ -1,4 +1,5 @@
 import { Box, Button, Icon, Paper, TextField, useTheme } from "@mui/material";
+import { Environment } from "../../environment";
 
 interface IListToolBarProps {
   textToSearch?: string;
@@ -35,7 +36,7 @@ export const ListToolBar: React.FC<IListToolBarProps> = ({
           size="small"
           value={textToSearch}
           onChange={(e) => onChangeTextSearch?.(e.target.value)}
-          placeholder="Pesquisar..."
+          placeholder={Environment.SEARCH_INPUT}
         />
       )}
       <Box display="flex" flex={1} justifyContent="end">
