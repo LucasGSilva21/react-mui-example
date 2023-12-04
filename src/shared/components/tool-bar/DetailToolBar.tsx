@@ -5,6 +5,9 @@ import {
   Icon,
   Paper,
   Skeleton,
+  Theme,
+  Typography,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 
@@ -45,6 +48,8 @@ export const DetailToolBar: React.FC<IDetailToolBarProps> = ({
   onClickNewBotton,
   onClickBackBotton,
 }) => {
+  const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
   const theme = useTheme();
 
   return (
@@ -66,23 +71,42 @@ export const DetailToolBar: React.FC<IDetailToolBarProps> = ({
           startIcon={<Icon>save</Icon>}
           onClick={onClickSaveBotton}
         >
-          Salvar
+          <Typography
+            variant="button"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            overflow="hidden"
+          >
+            Salvar
+          </Typography>
         </Button>
       )}
       {showLoadSaveBotton && <Skeleton width={110} height={60} />}
 
-      {showSaveAndBackBotton && !showLoadSaveAndBackBotton && (
-        <Button
-          variant="outlined"
-          color="primary"
-          disableElevation
-          startIcon={<Icon>save</Icon>}
-          onClick={onClickSaveAndBackBotton}
-        >
-          Salvar e voltar
-        </Button>
+      {showSaveAndBackBotton &&
+        !showLoadSaveAndBackBotton &&
+        !smDown &&
+        !mdDown && (
+          <Button
+            variant="outlined"
+            color="primary"
+            disableElevation
+            startIcon={<Icon>save</Icon>}
+            onClick={onClickSaveAndBackBotton}
+          >
+            <Typography
+              variant="button"
+              whiteSpace="nowrap"
+              textOverflow="ellipsis"
+              overflow="hidden"
+            >
+              Salvar e voltar
+            </Typography>
+          </Button>
+        )}
+      {showLoadSaveAndBackBotton && !smDown && !mdDown && (
+        <Skeleton width={180} height={60} />
       )}
-      {showLoadSaveAndBackBotton && <Skeleton width={180} height={60} />}
 
       {showDeleteBotton && !showLoadDeleteBotton && (
         <Button
@@ -92,12 +116,19 @@ export const DetailToolBar: React.FC<IDetailToolBarProps> = ({
           startIcon={<Icon>delete</Icon>}
           onClick={onClickDeleteBotton}
         >
-          Apagar
+          <Typography
+            variant="button"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            overflow="hidden"
+          >
+            Apagar
+          </Typography>
         </Button>
       )}
       {showLoadDeleteBotton && <Skeleton width={110} height={60} />}
 
-      {showNewBotton && !showLoadNewBotton && (
+      {showNewBotton && !showLoadNewBotton && !smDown && (
         <Button
           variant="outlined"
           color="primary"
@@ -105,12 +136,25 @@ export const DetailToolBar: React.FC<IDetailToolBarProps> = ({
           startIcon={<Icon>add</Icon>}
           onClick={onClickNewBotton}
         >
-          {textNewBotton}
+          <Typography
+            variant="button"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            overflow="hidden"
+          >
+            {textNewBotton}
+          </Typography>
         </Button>
       )}
-      {showLoadNewBotton && <Skeleton width={110} height={60} />}
+      {showLoadNewBotton && !smDown && <Skeleton width={110} height={60} />}
 
-      <Divider variant="middle" orientation="vertical" />
+      {showBackBotton &&
+        (showNewBotton ||
+          showDeleteBotton ||
+          showSaveBotton ||
+          showSaveAndBackBotton) && (
+          <Divider variant="middle" orientation="vertical" />
+        )}
 
       {showBackBotton && !showLoadBackBotton && (
         <Button
@@ -120,7 +164,14 @@ export const DetailToolBar: React.FC<IDetailToolBarProps> = ({
           startIcon={<Icon>arrow_back</Icon>}
           onClick={onClickBackBotton}
         >
-          Voltar
+          <Typography
+            variant="button"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            overflow="hidden"
+          >
+            Voltar
+          </Typography>
         </Button>
       )}
       {showLoadBackBotton && <Skeleton width={110} height={60} />}
