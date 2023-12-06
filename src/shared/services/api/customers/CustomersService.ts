@@ -4,9 +4,7 @@ import {
   ApiExceptionError,
   NotFoundError,
   CreateFailedError,
-  UpdateFailedError,
 } from "../axios-config/errors";
-import { DeleteFailedError } from "../axios-config/errors/DeleteFailedError";
 
 interface ICustomer {
   id: number;
@@ -20,10 +18,7 @@ type TCustomerWithTotal = {
   total: number;
 };
 
-const getAll = async (
-  page = 1,
-  search = ""
-): Promise<TCustomerWithTotal | Error> => {
+const getAll = async (page = 1, search = ""): Promise<TCustomerWithTotal> => {
   try {
     const { data, headers } = await Api.get<ICustomer[]>("/customers", {
       params: {
@@ -33,68 +28,68 @@ const getAll = async (
       },
     });
 
-    if (!data) {
-      return ApiExceptionError;
-    }
-
     return {
       data,
       total: Number(headers["x-total-count"] || Environment.DEFAULT_MAX_ITEMS),
     };
   } catch (error) {
     console.error(error);
-    return ApiExceptionError;
+    throw ApiExceptionError;
   }
 };
 
-const getById = async (id: number): Promise<ICustomer | Error> => {
+const getById = async (id: number): Promise<ICustomer> => {
   try {
     const { data } = await Api.get<ICustomer>(`/customers/${id}`);
     if (!data) {
-      return NotFoundError;
+      throw NotFoundError;
     }
     return data;
   } catch (error) {
     console.error(error);
-    return ApiExceptionError;
+    if (error === NotFoundError) {
+      throw NotFoundError;
+    }
+    throw ApiExceptionError;
   }
 };
 
-const create = async (
-  customer: Omit<ICustomer, "id">
-): Promise<number | Error> => {
+const create = async (customer: Omit<ICustomer, "id">): Promise<number> => {
   try {
     const { data } = await Api.post<ICustomer>("/customers", customer);
 
     if (!data) {
-      return CreateFailedError;
+      throw CreateFailedError;
     }
 
     return data.id;
   } catch (error) {
     console.error(error);
-    return CreateFailedError;
+    if (error === CreateFailedError) {
+      throw CreateFailedError;
+    }
+    throw ApiExceptionError;
   }
 };
 
 const updateById = async (
   id: number,
   customer: Partial<ICustomer>
-): Promise<void | Error> => {
+): Promise<void> => {
   try {
     await Api.put(`/customers/${id}`, customer);
   } catch (error) {
     console.error(error);
-    return UpdateFailedError;
+    throw ApiExceptionError;
   }
 };
 
-const deleteById = async (id: number): Promise<void | Error> => {
+const deleteById = async (id: number): Promise<void> => {
   try {
     await Api.delete(`/customers/${id}`);
   } catch (error) {
     console.error(error);
-    return DeleteFailedError;
+    throw ApiExceptionError;
   }
 };
 
