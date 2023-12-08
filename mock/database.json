@@ -1,3 +1,16 @@
 {
-  "customers": []
+  "customers": [
+    {
+      "id": 1,
+      "name": "Lucas",
+      "email": "lucas@mail.com",
+      "cityId": 1
+    },
+    {
+      "id": 2,
+      "name": "Fulano",
+      "email": "fulano@mail.com",
+      "cityId": 1
+    }
+  ]
 }
