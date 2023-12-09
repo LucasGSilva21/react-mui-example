@@ -6,7 +6,7 @@ import {
   CreateFailedError,
 } from "../axios-config/errors";
 
-interface ICustomer {
+export interface ICustomer {
   id: number;
   name: string;
   email: string;
