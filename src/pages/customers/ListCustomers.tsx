@@ -1,6 +1,8 @@
 import { useMemo, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
+  Icon,
+  IconButton,
   LinearProgress,
   Pagination,
   Paper,
@@ -24,6 +26,7 @@ import { Environment } from "../../shared/environment";
 export const ListCustomers: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { debounce } = useDebounce(1000);
+  const navigate = useNavigate();
 
   const [rows, setRows] = useState<ICustomer[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -52,6 +55,27 @@ export const ListCustomers: React.FC = () => {
         });
     });
   }, [debounce, page, search]);
+
+  const handleDelete = (id: number) => {
+    if (window.confirm("Realmente deseja apagar?")) {
+      CustomersService.deleteById(id)
+        .then(() => {
+          CustomersService.getAll(page, search)
+            .then((result) => {
+              setRows(result.data);
+              setTotalCount(result.total);
+              setIsLoading(false);
+            })
+            .catch((error) => {
+              setIsLoading(false);
+              alert(error);
+            });
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
+  };
 
   return (
     <BasePage
@@ -82,7 +106,17 @@ export const ListCustomers: React.FC = () => {
               <TableRow key={row.id}>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.email}</TableCell>
-                <TableCell>Ações</TableCell>
+                <TableCell>
+                  <IconButton
+                    size="small"
+                    onClick={() => navigate(`/customers/${row.id}`)}
+                  >
+                    <Icon>edit</Icon>
+                  </IconButton>
+                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
+                    <Icon>delete</Icon>
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
