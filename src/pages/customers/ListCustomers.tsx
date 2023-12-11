@@ -87,6 +87,7 @@ export const ListCustomers: React.FC = () => {
           onChangeTextSearch={(text) =>
             setSearchParams({ search: text, page: "1" }, { replace: true })
           }
+          onClickNewBotton={() => navigate("/customers/new")}
         />
       }
     >
