@@ -7,10 +7,10 @@
       "cityId": 1
     },
     {
-      "id": 2,
-      "name": "Fulano",
-      "email": "fulano@mail.com",
-      "cityId": 1
+      "name": "Gabriel",
+      "email": "gabriel@mail.com",
+      "cityId": 1,
+      "id": 2
     },
     {
       "id": 3,
