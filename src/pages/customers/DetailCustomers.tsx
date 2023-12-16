@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
-import { VForm, VTextField, useVForm } from "../../shared/forms";
+import * as yup from "yup";
+import { VForm, VTextField, useVForm, IVFormErrors } from "../../shared/forms";
 import { BasePage } from "../../shared/layouts";
 import { DetailToolBar } from "../../shared/components";
 import {
   CustomersService,
   ICustomer,
 } from "../../shared/services/api/customers/CustomersService";
+
+const formValidationSchema: yup.ObjectSchema<Omit<ICustomer, "id">> =
+  yup.object({
+    name: yup.string().required().min(3),
+    email: yup.string().email().required(),
+    cityId: yup.number().required(),
+  });
 
 export const DetailCustomers = () => {
   const { id } = useParams<"id">();
@@ -44,34 +52,48 @@ export const DetailCustomers = () => {
   }, [id, navigate, formRef]);
 
   const handleSave = (data: Omit<ICustomer, "id">) => {
-    setIsLoading(true);
-    if (id === "new") {
-      CustomersService.create(data)
-        .then((result) => {
-          setIsLoading(false);
-          if (isSaveAndBack()) {
-            navigate(`/customers`);
-          } else {
-            navigate(`/customers/${result}`);
-          }
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          alert(error.message);
+    formValidationSchema
+      .validate(data, { abortEarly: false })
+      .then((validateData) => {
+        setIsLoading(true);
+        if (id === "new") {
+          CustomersService.create(validateData)
+            .then((result) => {
+              setIsLoading(false);
+              if (isSaveAndBack()) {
+                navigate(`/customers`);
+              } else {
+                navigate(`/customers/${result}`);
+              }
+            })
+            .catch((error) => {
+              setIsLoading(false);
+              alert(error.message);
+            });
+        } else {
+          CustomersService.updateById(Number(id), data)
+            .then(() => {
+              setIsLoading(false);
+              if (isSaveAndBack()) {
+                navigate(`/customers`);
+              }
+            })
+            .catch((error) => {
+              setIsLoading(false);
+              alert(error.message);
+            });
+        }
+      })
+      .catch((errors: yup.ValidationError) => {
+        const validationErrors: IVFormErrors = {};
+
+        errors.inner.forEach((error) => {
+          if (!error.path) return;
+          validationErrors[error.path] = error.message;
         });
-    } else {
-      CustomersService.updateById(Number(id), data)
-        .then(() => {
-          setIsLoading(false);
-          if (isSaveAndBack()) {
-            navigate(`/customers`);
-          }
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          alert(error.message);
-        });
-    }
+
+        formRef.current?.setErrors(validationErrors);
+      });
   };
 
   const handleDelete = (id: number) => {
