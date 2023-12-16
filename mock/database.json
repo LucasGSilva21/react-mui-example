@@ -1,10 +1,10 @@
 {
   "customers": [
     {
-      "id": 1,
-      "name": "Lucas",
+      "name": "Lucas Gabriel",
       "email": "lucas@mail.com",
-      "cityId": 1
+      "cityId": 1,
+      "id": 1
     },
     {
       "name": "Gabriel",
@@ -149,6 +149,12 @@
       "name": "Roberto",
       "email": "roberto@mail.com",
       "cityId": 1
+    },
+    {
+      "name": "Stéfany",
+      "email": "stefany@mail.com",
+      "cityId": "1",
+      "id": 26
     }
   ]
 }

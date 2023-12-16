@@ -1,9 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
-import { Form } from "@unform/web";
-import { FormHandles } from "@unform/core";
-import { VTextField } from "../../shared/forms";
+import { VForm, VTextField, useVForm } from "../../shared/forms";
 import { BasePage } from "../../shared/layouts";
 import { DetailToolBar } from "../../shared/components";
 import {
@@ -15,7 +13,7 @@ export const DetailCustomers = () => {
   const { id } = useParams<"id">();
   const navigate = useNavigate();
 
-  const formRef = useRef<FormHandles>(null);
+  const { formRef, save, saveAndBack, isSaveAndBack } = useVForm();
 
   const [isLoading, setIsLoading] = useState(true);
   const [name, setName] = useState("");
@@ -35,8 +33,15 @@ export const DetailCustomers = () => {
           alert(error.message);
           navigate("/customers");
         });
+    } else {
+      setIsLoading(false);
+      formRef.current?.setData({
+        name: "",
+        email: "",
+        cityId: "",
+      });
     }
-  }, [id, navigate]);
+  }, [id, navigate, formRef]);
 
   const handleSave = (data: Omit<ICustomer, "id">) => {
     setIsLoading(true);
@@ -44,21 +49,27 @@ export const DetailCustomers = () => {
       CustomersService.create(data)
         .then((result) => {
           setIsLoading(false);
-          navigate(`/customers/${result}`);
+          if (isSaveAndBack()) {
+            navigate(`/customers`);
+          } else {
+            navigate(`/customers/${result}`);
+          }
         })
         .catch((error) => {
           setIsLoading(false);
-          alert(error);
+          alert(error.message);
         });
     } else {
       CustomersService.updateById(Number(id), data)
         .then(() => {
           setIsLoading(false);
-          alert("Dados alterados com sucesso!");
+          if (isSaveAndBack()) {
+            navigate(`/customers`);
+          }
         })
         .catch((error) => {
           setIsLoading(false);
-          alert(error);
+          alert(error.message);
         });
     }
   };
@@ -67,11 +78,10 @@ export const DetailCustomers = () => {
     if (window.confirm("Realmente deseja apagar?")) {
       CustomersService.deleteById(id)
         .then(() => {
-          alert("Registro apagado com sucesso!");
           navigate("/customers");
         })
         .catch((error) => {
-          alert(error);
+          alert(error.message);
         });
     }
   };
@@ -87,12 +97,12 @@ export const DetailCustomers = () => {
           onClickNewBotton={() => navigate("/customers/new")}
           onClickBackBotton={() => navigate("/customers")}
           onClickDeleteBotton={() => handleDelete(Number(id))}
-          onClickSaveBotton={() => formRef.current?.submitForm()}
-          onClickSaveAndBackBotton={() => formRef.current?.submitForm()}
+          onClickSaveBotton={() => save()}
+          onClickSaveAndBackBotton={() => saveAndBack()}
         />
       }
     >
-      <Form ref={formRef} onSubmit={handleSave}>
+      <VForm ref={formRef} onSubmit={handleSave}>
         <Box
           margin={1}
           display="flex"
@@ -142,7 +152,7 @@ export const DetailCustomers = () => {
             </Grid>
           </Grid>
         </Box>
-      </Form>
+      </VForm>
     </BasePage>
   );
 };
