@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useDrawerContext } from "../shared/contexts";
 import {
   Dashboard,
+  DetailCities,
   DetailCustomers,
   ListCities,
   ListCustomers,
@@ -37,6 +38,7 @@ export const AppRoutes = () => {
       <Route path="/customers" element={<ListCustomers />} />
       <Route path="/customers/:id" element={<DetailCustomers />} />
       <Route path="/cities" element={<ListCities />} />
+      <Route path="/cities/:id" element={<DetailCities />} />
       <Route path="*" element={<Navigate to="/home" />} />
     </Routes>
   );

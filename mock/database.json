@@ -156,5 +156,15 @@
       "cityId": "1",
       "id": 26
     }
+  ],
+  "cities": [
+    {
+      "name": "Divinópolis",
+      "id": 1
+    },
+    {
+      "name": "Belo Horizonte",
+      "id": 2
+    }
   ]
 }
