@@ -165,6 +165,50 @@
     {
       "name": "Belo Horizonte",
       "id": 2
+    },
+    {
+      "name": "Contagem",
+      "id": 3
+    },
+    {
+      "name": "Betim",
+      "id": 4
+    },
+    {
+      "name": "Lavras",
+      "id": 5
+    },
+    {
+      "name": "Perdões",
+      "id": 6
+    },
+    {
+      "name": "Carmo do Cajuru",
+      "id": 7
+    },
+    {
+      "name": "Oliveria",
+      "id": 8
+    },
+    {
+      "name": "Carmo da Mata",
+      "id": 9
+    },
+    {
+      "name": "Varginha",
+      "id": 10
+    },
+    {
+      "name": "São Paulo",
+      "id": 11
+    },
+    {
+      "name": "Rio de Janeiro",
+      "id": 12
+    },
+    {
+      "name": "Porto Alegre",
+      "id": 13
     }
   ]
 }

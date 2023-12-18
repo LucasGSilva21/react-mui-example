@@ -4,7 +4,7 @@ import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 import * as yup from "yup";
 import { VForm, VTextField, useVForm, IVFormErrors } from "../../shared/forms";
 import { BasePage } from "../../shared/layouts";
-import { DetailToolBar } from "../../shared/components";
+import { CitiesAutoComplete, DetailToolBar } from "../../shared/components";
 import {
   CustomersService,
   ICustomer,
@@ -46,7 +46,7 @@ export const DetailCustomers = () => {
       formRef.current?.setData({
         name: "",
         email: "",
-        cityId: "",
+        cityId: undefined,
       });
     }
   }, [id, navigate, formRef]);
@@ -164,12 +164,7 @@ export const DetailCustomers = () => {
             </Grid>
             <Grid container item direction="row" spacing={2}>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <VTextField
-                  fullWidth
-                  disabled={isLoading}
-                  label="Cidade"
-                  name="cityId"
-                />
+                <CitiesAutoComplete isExternalLoading={isLoading} />
               </Grid>
             </Grid>
           </Grid>
