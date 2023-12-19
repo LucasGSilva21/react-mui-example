@@ -1,7 +1,7 @@
 {
   "customers": [
     {
-      "name": "Lucas Gabriel",
+      "name": "Lucas",
       "email": "lucas@mail.com",
       "cityId": 1,
       "id": 1
@@ -210,5 +210,8 @@
       "name": "Porto Alegre",
       "id": 13
     }
-  ]
+  ],
+  "login": {
+    "accessToken": "valid-token"
+  }
 }
